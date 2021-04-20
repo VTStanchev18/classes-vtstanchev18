@@ -8,9 +8,12 @@ using namespace std;
 class Point2D
 {
 public:
+    //const float offset = 15.0;
+
     // Parameterless constructor (ctor)
     Point2D()
     {
+        
         cout << "Constructor1" << endl;
         x = 0;
         y = 0;
@@ -23,6 +26,14 @@ public:
         y = newY;
     }
 
+    // Copy constructor
+    Point2D(const Point2D& p)
+    {
+        cout << "Copy constructor" << endl;
+        x = p.x;
+        y = p.y;
+    }
+
     ~Point2D()
     {
         cout << "Destructor: " << x << " , " << y << endl;
@@ -33,20 +44,88 @@ public:
         cout << x << " , " << y<<endl;
     }
 
+    // Predefined operator +
+    Point2D operator+(Point2D& otherPoint) {
+        this->x += otherPoint.x;
+        this->y += otherPoint.y;
+        
+        return *this;
+    }
+
+    __declspec(property(put = setX, get = getX)) float x1;
+
+    void setX(float newValue)
+    {
+        cout << "setX" << endl;
+        if (newValue < -200)
+        {
+            throw "Invalid X cordinate";
+        }
+        x = newValue;
+    }
+
+    float getX()
+    {
+        return x;
+    }
+
+    void setY(float newValue)
+    {
+        cout << "setY" << endl;
+        if (newValue < -200)
+        {
+            throw "Invalid Y cordinate";
+        }
+        y = newValue;
+    }
+
+    float getY()
+    {
+        return y;
+    }
+
 private:
     float x;
     float y;
 };
 
+void dump(Point2D p)
+{
+    p.toString();
+}
+
 int main()
 {
-    Point2D p1;
+    Point2D pp1(3, 4);
+    Point2D pp2(5, 6);
+    Point2D pp3;
     Point2D* p2 = new Point2D();
     Point2D* p3 = new Point2D(4.6, 5.8);
 
-    p1.toString();
-    p2->toString();
-    p3->toString();
+
+    pp1.setX(15);
+    pp1.setY(35);
+
+    pp1.toString();
+    try
+    {
+        pp1.x1 = -600;
+        cout << pp1.x1 << endl;
+    }
+    catch (const char* msg)
+    {
+        cout << msg << endl;
+    }
+    
+    //dump(pp1);
+
+    //pp3 = pp1 + pp2;
+
+    //// pp1 + pp2;
+
+    //pp1.toString();
+    //p2->toString();
+    //p3->toString();
 
     delete p2;
     delete p3;
